@@ -41,7 +41,8 @@ class Bird:
         self.tick_count += 1
 
         # for downward acceleration
-        displacement = self.vel * (self.tick_count) + 0.5 * (3) * (self.tick_count) ** 2  # calculate displacement
+        displacement = self.vel * (self.tick_count) + \
+                       0.5 * (3) * (self.tick_count) ** 2
 
         # terminal velocity
         if displacement >= 16:
@@ -86,6 +87,29 @@ class Bird:
         return pygame.mask.from_surface(self.img)
 
 
+class Pipe:
+    GAP = 100
+    VEL = 5
+
+    def __init__(self, x):
+        self.x = x
+        self.gap = 50
+        self.height = 0
+
+        self.top = 0
+        self.bottom = 0
+        self.PIPE_TOP = pygame.transform.flip(PIPE_IMG, False, True)
+        self.PIPE_BOTTOM = PIPE_IMG
+
+        self.passed = False
+        self.set_height()
+
+    def set_height(self):
+        self.height = random.randrange(20, 250)
+        self.top = self.height - self.PIPE_TOP.get_height()
+        self.bottom = self.height + self.GAP
+
+
 def draw_window(win, bird):
     win.blit(BG_IMG, (0, 0))
     bird.draw(win)
@@ -104,7 +128,7 @@ def main():
             if event.type == pygame.QUIT:
                 run = False
 
-        bird.move()
+        # bird.move()
         draw_window(win, bird)
     pygame.quit()
     quit()
